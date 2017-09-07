@@ -39,4 +39,10 @@ describe('Haiku', function() {
     expect(vowelCount - haiku.isSilentEndsInE(letterArray)).toEqual(2)
   });
 
+  it('should test counting all syllables in a line', function() {
+    let haiku = new Haiku("", "Yes it is", "It is indeed")
+    let lineArray = haiku.translateLineToArray(haiku.line1)
+    expect(haiku.loopThroughAllWords(lineArray)).toEqual(5)
+  });
+
 });

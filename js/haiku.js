@@ -15,11 +15,15 @@ export class Haiku {
   }
 
   loopThroughAllWords(lineArray){
-    for(let word in lineArray){
-      let letterArray = splitEachWordIntoArray(word);
-      checkForTwoMiddleConsonants(letterArray);
-      // checkForConsonantSurroundedByVowels(letterArray);
+    let lineSyllableCount = 0;
+    for(let i=0 ; i<lineArray.length ; i++){
+      let letterArray = this.splitEachWordIntoArray(lineArray[i]);
+      let wordVowelCount = this.countVowels(letterArray);
+      let silentVowelCount = this.isSilentTwoVowelsTogether(letterArray) + this.isSilentEndsInE(letterArray);
+      let wordSyllableCount = wordVowelCount - silentVowelCount;
+      lineSyllableCount += wordSyllableCount;
     }
+    return lineSyllableCount;
   }
 
   splitEachWordIntoArray(word){
@@ -51,16 +55,17 @@ export class Haiku {
     let silentVowelCount = 0;
     let lastLetterIndex = letterArray.length;
     let lastLetter = letterArray[lastLetterIndex-1];
-    if(lastLetter === "e" && letterArray[lastLetterIndex - 2] != "l"){
+    if((lastLetter === "e"  && letterArray[lastLetterIndex - 2] != "l") || (lastLetter === "s"  && letterArray[lastLetterIndex - 2] === "e" && letterArray[lastLetterIndex - 3] !="l")){
       silentVowelCount = 1;
     }
     return silentVowelCount;
   }
 
-
-
-  countSyllablesBasedOnVowels(vowelCount,silentVowelCount){
-
+  isValidHaiku(sylCountLine1, sylCountLine2, sylCountLine3){
+    if(sylCountLine1 != 5 || sylCountLine2 != 7 || sylCountLine3 != 5){
+      return "Not a Haiku!";
+    }
+    return "You made a Haiku!";
   }
 
   // checkForTwoMiddleConsonants(letterArray){
@@ -74,6 +79,5 @@ export class Haiku {
   //   }
   //   return ruleMetCount;
   // }
-
 
 }
